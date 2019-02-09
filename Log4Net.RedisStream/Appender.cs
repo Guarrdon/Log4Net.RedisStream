@@ -7,7 +7,7 @@ using StackExchange.Redis;
 
 namespace Log4Net.RedisStream
 {
-    public class StreamAppender : AppenderSkeleton
+    public class RedisStreamAppender : AppenderSkeleton
     {
 
         //todo: enforce secure connection?
