@@ -87,11 +87,12 @@ There is also a JsonLayout included in the Log4Net.RedisStream project. This can
 ## Running the tests
 
 The tests are [XUnit](https://xunit.github.io/) unit tests.
-You can execute the tests by running:
+You can execute the tests, with code coverage analysis, by running:
 
 ```
-dotnet test
+dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=lcov /p:CoverletOutput=./lcov.info
 ```
+
 
 ## Built With
 
