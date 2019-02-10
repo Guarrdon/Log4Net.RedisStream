@@ -14,7 +14,7 @@ namespace Log4Net.RedisStream
         }
         public override void ActivateOptions()
         {
-            //no options available
+            
         }
 
         public override void Format(TextWriter writer, LoggingEvent loggingEvent)

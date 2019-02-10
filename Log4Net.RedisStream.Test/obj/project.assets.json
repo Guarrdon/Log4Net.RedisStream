@@ -23,6 +23,13 @@
           "lib/netstandard1.5/Castle.Core.dll": {}
         }
       },
+      "coverlet.msbuild/2.5.1": {
+        "type": "package",
+        "build": {
+          "build/netstandard2.0/coverlet.msbuild.props": {},
+          "build/netstandard2.0/coverlet.msbuild.targets": {}
+        }
+      },
       "log4net/2.0.8": {
         "type": "package",
         "dependencies": {
@@ -2360,6 +2367,34 @@
         "lib/netstandard1.5/Castle.Core.dll",
         "lib/netstandard1.5/Castle.Core.xml",
         "readme.txt"
+      ]
+    },
+    "coverlet.msbuild/2.5.1": {
+      "sha512": "J3Wsh2RGtcTn+Ev1HCNQTlK2taTbuqtjAiA+eb8chFyKhwwuX/c78eS5y0djqH1tsQCCu+1HKZcZYyaJwty27A==",
+      "type": "package",
+      "path": "coverlet.msbuild/2.5.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "build/netstandard2.0/ConsoleTables.dll",
+        "build/netstandard2.0/Microsoft.Build.Framework.dll",
+        "build/netstandard2.0/Microsoft.Build.Utilities.Core.dll",
+        "build/netstandard2.0/Microsoft.Extensions.FileSystemGlobbing.dll",
+        "build/netstandard2.0/Mono.Cecil.Mdb.dll",
+        "build/netstandard2.0/Mono.Cecil.Pdb.dll",
+        "build/netstandard2.0/Mono.Cecil.Rocks.dll",
+        "build/netstandard2.0/Mono.Cecil.dll",
+        "build/netstandard2.0/Newtonsoft.Json.dll",
+        "build/netstandard2.0/coverlet.core.dll",
+        "build/netstandard2.0/coverlet.msbuild.props",
+        "build/netstandard2.0/coverlet.msbuild.targets",
+        "build/netstandard2.0/coverlet.msbuild.tasks.deps.json",
+        "build/netstandard2.0/coverlet.msbuild.tasks.dll",
+        "build/netstandard2.0/coverlet.template.dll",
+        "build/netstandard2.0/runtimes/unix/lib/netstandard1.3/System.Text.Encoding.CodePages.dll",
+        "build/netstandard2.0/runtimes/win/lib/netstandard1.3/System.Text.Encoding.CodePages.dll",
+        "coverlet.msbuild.2.5.1.nupkg.sha512",
+        "coverlet.msbuild.nuspec"
       ]
     },
     "log4net/2.0.8": {
@@ -7648,6 +7683,7 @@
       "Microsoft.NETCore.App >= 2.1.0",
       "Moq >= 4.10.1",
       "Newtonsoft.Json >= 12.0.1",
+      "coverlet.msbuild >= 2.5.1",
       "log4net >= 2.0.8",
       "xunit >= 2.4.1",
       "xunit.runner.visualstudio >= 2.4.1"
@@ -7709,6 +7745,12 @@
           "Newtonsoft.Json": {
             "target": "Package",
             "version": "[12.0.1, )"
+          },
+          "coverlet.msbuild": {
+            "include": "Runtime, Build, Native, ContentFiles, Analyzers",
+            "suppressParent": "All",
+            "target": "Package",
+            "version": "[2.5.1, )"
           },
           "log4net": {
             "target": "Package",

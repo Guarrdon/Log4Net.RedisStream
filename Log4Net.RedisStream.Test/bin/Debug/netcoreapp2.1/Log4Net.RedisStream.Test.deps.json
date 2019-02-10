@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.1",
-    "signature": "7727d8ed7c877a065adcb2cc3599b7c5d52c7cec"
+    "signature": "770acfb466f97a16e2ba61d1967f9912d044167f"
   },
   "compilationOptions": {},
   "targets": {
@@ -11,6 +11,7 @@
           "Log4Net.RedisStream": "1.0.0",
           "Moq": "4.10.1",
           "Newtonsoft.Json": "12.0.1",
+          "coverlet.msbuild": "2.5.1",
           "log4net": "2.0.8",
           "xunit": "2.4.1",
           "xunit.runner.visualstudio": "2.4.1"
@@ -38,6 +39,7 @@
           }
         }
       },
+      "coverlet.msbuild/2.5.1": {},
       "log4net/2.0.8": {
         "dependencies": {
           "System.AppContext": "4.1.0",
@@ -1552,6 +1554,13 @@
       "sha512": "sha512-Dx90A7xzdyYiaq1aMn3QmblpFAaVhDCiZkSblt96pf8QopOjLxCcs5ufKJA1zyg2L+Hxjnzx3JNrmfK8ZMRHvA==",
       "path": "castle.core/4.3.1",
       "hashPath": "castle.core.4.3.1.nupkg.sha512"
+    },
+    "coverlet.msbuild/2.5.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-J3Wsh2RGtcTn+Ev1HCNQTlK2taTbuqtjAiA+eb8chFyKhwwuX/c78eS5y0djqH1tsQCCu+1HKZcZYyaJwty27A==",
+      "path": "coverlet.msbuild/2.5.1",
+      "hashPath": "coverlet.msbuild.2.5.1.nupkg.sha512"
     },
     "log4net/2.0.8": {
       "type": "package",
