@@ -5,7 +5,7 @@ project.lock.json
 *.pyc
 
 # Visual Studio Code
-.vscode
+.vscode/
 
 # User-specific files
 *.suo
@@ -14,6 +14,7 @@ project.lock.json
 *.sln.docstates
 
 # Build results
+# Not sure why ** is not working (hence exact matches)
 **/[Dd]ebug/
 **/[Dd]ebugPublic/
 **/[Rr]elease/
@@ -24,6 +25,10 @@ project.lock.json
 **/bld/
 **/[Bb]in/
 **/[Oo]bj/
+
+Log4Net.RedisStream*/bin/
+Log4Net.RedisStream*/obj/
+
 msbuild.log
 msbuild.err
 msbuild.wrn
