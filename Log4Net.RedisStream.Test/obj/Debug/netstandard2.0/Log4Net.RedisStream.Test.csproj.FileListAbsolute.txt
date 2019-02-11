@@ -1,9 +1,0 @@
-/Users/mattlyons/Desktop/Development2/Guarrdon/Log4Net.RedisStream/Log4Net.RedisStream.Test/bin/Debug/netstandard2.0/Log4Net.RedisStream.Test.deps.json
-/Users/mattlyons/Desktop/Development2/Guarrdon/Log4Net.RedisStream/Log4Net.RedisStream.Test/bin/Debug/netstandard2.0/Log4Net.RedisStream.Test.dll
-/Users/mattlyons/Desktop/Development2/Guarrdon/Log4Net.RedisStream/Log4Net.RedisStream.Test/bin/Debug/netstandard2.0/Log4Net.RedisStream.Test.pdb
-/Users/mattlyons/Desktop/Development2/Guarrdon/Log4Net.RedisStream/Log4Net.RedisStream.Test/obj/Debug/netstandard2.0/Log4Net.RedisStream.Test.csprojAssemblyReference.cache
-/Users/mattlyons/Desktop/Development2/Guarrdon/Log4Net.RedisStream/Log4Net.RedisStream.Test/obj/Debug/netstandard2.0/Log4Net.RedisStream.Test.csproj.CoreCompileInputs.cache
-/Users/mattlyons/Desktop/Development2/Guarrdon/Log4Net.RedisStream/Log4Net.RedisStream.Test/obj/Debug/netstandard2.0/Log4Net.RedisStream.Test.AssemblyInfoInputs.cache
-/Users/mattlyons/Desktop/Development2/Guarrdon/Log4Net.RedisStream/Log4Net.RedisStream.Test/obj/Debug/netstandard2.0/Log4Net.RedisStream.Test.AssemblyInfo.cs
-/Users/mattlyons/Desktop/Development2/Guarrdon/Log4Net.RedisStream/Log4Net.RedisStream.Test/obj/Debug/netstandard2.0/Log4Net.RedisStream.Test.dll
-/Users/mattlyons/Desktop/Development2/Guarrdon/Log4Net.RedisStream/Log4Net.RedisStream.Test/obj/Debug/netstandard2.0/Log4Net.RedisStream.Test.pdb
