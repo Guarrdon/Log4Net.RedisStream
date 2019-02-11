@@ -9,8 +9,15 @@ namespace Log4Net.RedisStream.Test
 {
     public class AppenderTests
     {
+
         [Fact]
-        public void ConfigurationElementsMissing()
+        public void RedisConnection_ConnectionMissing()
+        {
+            var appender = new RedisStreamAppender();
+            Assert.Throws<InvalidOperationException>(() => appender.ConnectToRedis(""));
+        }
+        [Fact]
+        public void Logging_ConfigurationElementsMissing()
         {
             var errorHandler = new Log4NetErrorHandler();
             var mockDatabase = BuildSuccessDatabase();
@@ -18,7 +25,7 @@ namespace Log4Net.RedisStream.Test
             var mockAppender = BuildSuccessAppender(mockMultiplexer, errorHandler);
             mockAppender.SetupProperty(_ => _.RedisConnectionString, null);
             mockAppender.SetupProperty(_ => _.RedisStreamName, null);
-           
+
             var loggingEvent = new LoggingEvent(typeof(LayoutTests), null, "LoggerName", Level.Info, "Example of a Redis Stream logging entry", null);
 
             mockAppender.Object.DoAppend(loggingEvent);
