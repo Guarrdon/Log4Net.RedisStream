@@ -11,16 +11,33 @@ namespace Log4Net.RedisStream.Test
     {
 
         [Fact]
+        public void Appender_MessageFieldDefaultedIfNotSet()
+        {
+            var appender = new RedisStreamAppender();
+            Assert.Equal("message", appender.RedisStreamMessageField);
+        }
+        [Fact]
+        public void Appender_AutoPropertiesSetCorrectly()
+        {
+            var appender = new RedisStreamAppender { RedisConnectionString = "a", RedisStreamName = "b", RedisStreamMessageField = "c" };
+            Assert.Equal("a", appender.RedisConnectionString);
+            Assert.Equal("b", appender.RedisStreamName);
+            Assert.Equal("c", appender.RedisStreamMessageField);
+        }
+        [Fact]
         public void RedisConnection_ConnectionMissing()
         {
             var appender = new RedisStreamAppender();
+            Assert.Throws<InvalidOperationException>(() => appender.ConnectToRedis(""));
+
+            appender.RedisConnectionString = "";
             Assert.Throws<InvalidOperationException>(() => appender.ConnectToRedis(""));
         }
         [Fact]
         public void Logging_ConfigurationElementsMissing()
         {
             var errorHandler = new Log4NetErrorHandler();
-            var mockDatabase = BuildSuccessDatabase();
+            var mockDatabase = BuildDatabase("SUCCESS_ID");
             var mockMultiplexer = BuildSuccessConnectionMultiplexer(mockDatabase);
             var mockAppender = BuildSuccessAppender(mockMultiplexer, errorHandler);
             mockAppender.SetupProperty(_ => _.RedisConnectionString, null);
@@ -39,15 +56,47 @@ namespace Log4Net.RedisStream.Test
         public void SuccessfulLogger()
         {
             var errorHandler = new Log4NetErrorHandler();
-            var mockDatabase = BuildSuccessDatabase();
+            var mockDatabase = BuildDatabase("SUCCESS_ID");
             var mockMultiplexer = BuildSuccessConnectionMultiplexer(mockDatabase);
             var mockAppender = BuildSuccessAppender(mockMultiplexer, errorHandler);
 
-            var loggingEvent = new LoggingEvent(typeof(LayoutTests), null, "LoggerName", Level.Info, "Example of a Redis Stream logging entry", null);
+            var loggingEvent = new LoggingEvent(typeof(AppenderTests), null, "LoggerName", Level.Info, "Example of a Redis Stream logging entry", null);
 
             mockAppender.Object.DoAppend(loggingEvent);
 
             Assert.Null(errorHandler.LogException);
+        }
+
+
+        [Fact]
+        public void FailedToLogToRedis_IncorrectReturnMessageId()
+        {
+            var errorHandler = new Log4NetErrorHandler();
+            var mockDatabase = BuildDatabase(RedisValue.Null);
+            var mockMultiplexer = BuildSuccessConnectionMultiplexer(mockDatabase);
+            var mockAppender = BuildSuccessAppender(mockMultiplexer, errorHandler);
+
+            var loggingEvent = new LoggingEvent(typeof(AppenderTests), null, "LoggerName", Level.Info, "Example of a Redis Stream logging entry", null);
+
+            mockAppender.Object.DoAppend(loggingEvent);
+
+            Assert.NotNull(errorHandler.LogException);
+            Assert.IsAssignableFrom<RedisException>(errorHandler.LogException);
+        }
+
+        [Fact]
+        public void FailedToLogToRedis_FailedConnectionToRedis()
+        {
+            var errorHandler = new Log4NetErrorHandler();
+            var mockMultiplexer = BuildFailingConnectionMultiplexer();
+            var mockAppender = BuildSuccessAppender(mockMultiplexer, errorHandler);
+
+            var loggingEvent = new LoggingEvent(typeof(AppenderTests), null, "LoggerName", Level.Info, "Example of a Redis Stream logging entry", null);
+
+            mockAppender.Object.DoAppend(loggingEvent);
+
+            Assert.NotNull(errorHandler.LogException);
+            Assert.IsAssignableFrom<RedisConnectionException>(errorHandler.LogException);
         }
 
         private Mock<RedisStreamAppender> BuildSuccessAppender(Mock<IConnectionMultiplexer> mockMultiplexer, Log4NetErrorHandler errorHandler)
@@ -67,15 +116,14 @@ namespace Log4Net.RedisStream.Test
             return mockAppender;
         }
 
-        private Mock<IDatabase> BuildSuccessDatabase()
+        private Mock<IDatabase> BuildDatabase(RedisValue returnValue)
         {
             var mockDatabase = new Mock<IDatabase>();
             mockDatabase.Setup(_ => _.StreamAdd(It.IsAny<RedisKey>(), It.IsAny<RedisValue>(), It.IsAny<RedisValue>(), It.IsAny<RedisValue?>(), It.IsAny<int?>(), It.IsAny<bool>(), It.IsAny<CommandFlags>()))
-                        .Returns("SUCCESS_ID");
+                        .Returns(returnValue);
 
             return mockDatabase;
         }
-
         private Mock<IConnectionMultiplexer> BuildSuccessConnectionMultiplexer(Mock<IDatabase> mockDatabase)
         {
             var mockMultiplexer = new Mock<IConnectionMultiplexer>();
@@ -85,7 +133,16 @@ namespace Log4Net.RedisStream.Test
 
             return mockMultiplexer;
         }
+        private Mock<IConnectionMultiplexer> BuildFailingConnectionMultiplexer()
+        {
+            var mockMultiplexer = new Mock<IConnectionMultiplexer>();
+            mockMultiplexer.Setup(_ => _.IsConnected).Returns(false);
+            mockMultiplexer.Setup(_ => _.GetDatabase(It.IsAny<int>(), It.IsAny<object>()))
+                            .Throws(new RedisConnectionException(ConnectionFailureType.UnableToConnect, "Failed"));
 
+
+            return mockMultiplexer;
+        }
     }
 
     public class Log4NetErrorHandler : IErrorHandler

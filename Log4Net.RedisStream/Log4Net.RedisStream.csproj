@@ -2,6 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>Log4Net.RedisStream</PackageId>
+    <Version>0.9.1</Version>
+    <Authors>guarrdon</Authors>
+    <Company>EnvisionThen</Company>
+    <Title>Redis Stream Log4Net Appender</Title>
+    <Description>Custom Log4Net appender to push log messages to a Redis Stream</Description>
+    <License>https://github.com/Guarrdon/Log4Net.RedisStream/blob/master/LICENSE</License>
+    <PackageProjectUrl>https://github.com/Guarrdon/Log4Net.RedisStream</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Guarrdon/Log4Net.RedisStream</RepositoryUrl>
+    <PackageTags>Log4Net;Redis;RedisStreams;Logging</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
