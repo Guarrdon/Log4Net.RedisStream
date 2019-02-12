@@ -1,5 +1,7 @@
 # Log4Net.RedisStream
 
+[![Build Status](https://dev.azure.com/mattlyons/mattlyons/_apis/build/status/Guarrdon.Log4Net.RedisStream?branchName=master)](https://dev.azure.com/mattlyons/mattlyons/_build/latest?definitionId=1&branchName=master)
+
 Custom Log4Net appender to push log messages to a Redis Stream.
 Written for .Net Core applications 
 
