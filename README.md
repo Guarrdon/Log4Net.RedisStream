@@ -92,7 +92,7 @@ The tests are [XUnit](https://xunit.github.io/) unit tests.
 You can execute the tests, with code coverage analysis, by running:
 
 ```
-dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=lcov /p:CoverletOutput=./lcov.info
+dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=lcov /p:CoverletOutput=./lcov.info /p:Exclude=[xunit.*]*
 ```
 
 
@@ -100,6 +100,7 @@ dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=lcov /p:CoverletOutp
 
 * [VSCode](https://code.visualstudio.com/) - Integrated Development Environment
 * [Redis](https://redis.io/) - In-memory and persistent data strustures
+* [StackExchange.Redis](https://github.com/StackExchange/StackExchange.Redis) - Redis Client
 * [Log4Net](https://logging.apache.org/log4net/) - Base logging framework
 * [XUnit](https://xunit.github.io/) - Unit test framework
 
