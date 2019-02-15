@@ -23,7 +23,7 @@ namespace Log4Net.RedisStream
             return ConnectionMultiplexer.Connect(connectionString);
         }
 
-        protected override void Append(LoggingEvent loggingEvent)
+        protected async override void Append(LoggingEvent loggingEvent)
         {
             try
             {
@@ -38,12 +38,11 @@ namespace Log4Net.RedisStream
                     var db = connection.GetDatabase();
 
                     //convert raw loggingEvent to json
-                    //JsonLayout allowed
                     var logEventJson = this.RenderLoggingEvent(loggingEvent);
 
                     //add log message to stream
-                    var messageId = db.StreamAdd(this.RedisStreamName, this.RedisStreamMessageField, logEventJson, null, null, false, CommandFlags.None);
-
+                    var messageId = await db.StreamAddAsync(this.RedisStreamName, this.RedisStreamMessageField, logEventJson, null, null, false, CommandFlags.None);
+                    
                     //check for message failure
                     if (messageId == RedisValue.Null || ((string)messageId).Length == 0)
                         throw new RedisException("The message failed to log to a Redis Stream.  Return message was either null or empty.");

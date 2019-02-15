@@ -1,5 +1,6 @@
 ﻿using System;
 using log4net.Core;
+using log4net.Layout;
 using Moq;
 using StackExchange.Redis;
 using Xunit;
@@ -43,7 +44,7 @@ namespace Log4Net.RedisStream.Test
             mockAppender.SetupProperty(_ => _.RedisConnectionString, null);
             mockAppender.SetupProperty(_ => _.RedisStreamName, null);
 
-            var loggingEvent = new LoggingEvent(typeof(LayoutTests), null, "LoggerName", Level.Info, "Example of a Redis Stream logging entry", null);
+            var loggingEvent = new LoggingEvent(typeof(AppenderTests), null, "LoggerName", Level.Info, "Example of a Redis Stream logging entry", null);
 
             mockAppender.Object.DoAppend(loggingEvent);
 
@@ -111,7 +112,7 @@ namespace Log4Net.RedisStream.Test
 
             mockAppender.Object.Threshold = Level.Info;
             mockAppender.Object.ErrorHandler = errorHandler;
-            mockAppender.Object.Layout = new JsonLayout();
+            mockAppender.Object.Layout = new PatternLayout("%date [%thread] %-5level %logger [%property{NDC}] - %message%newline");
 
             return mockAppender;
         }
@@ -119,8 +120,8 @@ namespace Log4Net.RedisStream.Test
         private Mock<IDatabase> BuildDatabase(RedisValue returnValue)
         {
             var mockDatabase = new Mock<IDatabase>();
-            mockDatabase.Setup(_ => _.StreamAdd(It.IsAny<RedisKey>(), It.IsAny<RedisValue>(), It.IsAny<RedisValue>(), It.IsAny<RedisValue?>(), It.IsAny<int?>(), It.IsAny<bool>(), It.IsAny<CommandFlags>()))
-                        .Returns(returnValue);
+            mockDatabase.Setup(_ => _.StreamAddAsync(It.IsAny<RedisKey>(), It.IsAny<RedisValue>(), It.IsAny<RedisValue>(), It.IsAny<RedisValue?>(), It.IsAny<int?>(), It.IsAny<bool>(), It.IsAny<CommandFlags>()))
+                        .Returns(System.Threading.Tasks.Task.FromResult<RedisValue>(returnValue));
 
             return mockDatabase;
         }

@@ -15,21 +15,19 @@ Redis 5.0 introduced [Redis Streams](https://redis.io/topics/streams-intro), an 
 
 This readme will provide detail on the how the appender should be leveraged to communicate with Redis Streams.
 
+Available on [Nuget](https://www.nuget.org/packages/Log4Net.RedisStream/).
+
 ### Prerequisites
 
 For Microsoft .Net Core applications
-An accessible Redis instance >= v5.0
-To get started locally, a [Redis Docker container](https://hub.docker.com/_/redis) can be useful.    
+An accessible Redis instance >= v5.0.
 
-### Installing
+Docker is not required to run the example application, however a Dockerfile and docker-compose.yml file are included to maintain a consistent environment.
 
-*Will be pushed to Nuget as an accessible public package*
+To run a remote instance of Redis for tests, review the [Redis Docker container](https://hub.docker.com/_/redis).    
 
-Ensure that your Redis instance is available.  You can use the cli command to PING the Redis instance.  If successful, a PONG response is expected.
 
-```
-redis-cli -h localhost -p 6390 ping
-```
+## Configuration
 
 The following Log4Net details must be incorporated to provide the necessary configuration.
 
@@ -44,17 +42,15 @@ The following Log4Net details must be incorporated to provide the necessary conf
             name="RedisStreamAppender"
             type="Log4Net.RedisStream.RedisStreamAppender, Log4Net.RedisStream">
             <!-- required parameters -->
-            <RedisConnectionString value="localhost:6739" />
-            <RedisStreamName value="App1LoggingStream" />
+            <RedisConnectionString value="redis:6379" />
+            <RedisStreamName value="ExampleAppStream" />
             <!-- optional parameters -->
             <RedisStreamMessageField value="message" />
             <threshold value="INFO" />
             <!-- layout -->
-            <!-- optionally use Log4Net.RedisStream.JsonLayout for json serialized output -->
             <layout type="log4net.Layout.PatternLayout">
-                <conversionPattern value="%5level - %message%newline" />
+                <conversionPattern value="%date [%thread] %-5level %logger [%property{NDC}] - %message%newline" />
             </layout>
-            <!--<layout type="Log4Net.RedisStream.JsonLayout, Log4Net.RedisStream" />-->
     </appender>
 </log4net>
 ```
@@ -66,25 +62,58 @@ The appender configuration leverages three primary settings.
 
 *It is important to note that in this configuration, all log messages up to the **INFO** subtype are processed.  **DEBUG** logs are not processed.* 
 
+
+## Execution
+
+Docker configuration files are located at the root of the solution.
+
+The Dockerfile creates a Docker log4net-redisstream-example image locally.  Use the following command to build the image.
+
+```
+docker build -t log4net-redisstream-example .
+```
+
+Utilize the Docker Compose command to initialize the environment with a Redis instance along side the .NetCore example application.  Configurations for Docker Compose are found in the docker-compose.yml.  The configuration requires the previously built log4net-redisstream-example image.
+
+```
+docker-compose up
+```
+
+After some initial Redis startup logging, the following should be seen in the Docker console.
+
+*console_1  | Log4Net configuration loaded.*
+*console_1  | Default logger created.*
+*console_1  | Log attempted.*
+*console_1  | Redis Stream log example finished.*
+*log4netredisstream_console_1 exited with code 0*
+
 If Log4Net is correctly configured, the standard logger should automatically forward to the Redis Stream instance.
 You can test that the number of entries has incremented by using the following command from the Redis cli command:
 
 ```
-xlen App1LoggingStream
+xlen ExampleAppStream
 ```
+*Note the stream name comes from the configuration*
 
 Or review the values with the following command (note this brings back **ALL** of stream entries):
 
 ```
-xrange App1LoggingStream - +
+xrange ExampleAppStream - +
 ```
 
 See the [Redis Streams documentation](https://redis.io/topics/streams-intro) for more information.
 
+To ensure that your Redis instance is available, you can use the cli command to PING the instance.  If successful, a PONG response is expected.
 
-### Layout format
 
-There is also a JsonLayout included in the Log4Net.RedisStream project. This can  
+### Clean up
+
+To clean up the resultant Docker images, containers, and network, use the following command: 
+
+```
+docker-compose down
+```
+
 
 ## Running the tests
 
@@ -103,7 +132,7 @@ dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=lcov /p:CoverletOutp
 * [StackExchange.Redis](https://github.com/StackExchange/StackExchange.Redis) - Redis Client
 * [Log4Net](https://logging.apache.org/log4net/) - Base logging framework
 * [XUnit](https://xunit.github.io/) - Unit test framework
-
+* [Docker Compose](https://docs.docker.com/compose/) - Containerization and Orchestation
 
 ## Tags
 

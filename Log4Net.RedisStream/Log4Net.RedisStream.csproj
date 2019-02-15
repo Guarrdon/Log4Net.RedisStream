@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>Log4Net.RedisStream</PackageId>
-    <Version>0.9.1</Version>
+    <Version>1.0.22</Version>
     <Authors>guarrdon</Authors>
     <Company>EnvisionThen</Company>
     <Title>Redis Stream Log4Net Appender</Title>
