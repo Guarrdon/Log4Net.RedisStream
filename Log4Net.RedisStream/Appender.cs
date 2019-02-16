@@ -15,12 +15,18 @@ namespace Log4Net.RedisStream
         public virtual string RedisStreamName { get; set; }
         public virtual string RedisStreamMessageField { get; set; } = "message";
 
-        public virtual IConnectionMultiplexer ConnectToRedis(string connectionString)
+
+        protected virtual IConnectionMultiplexer RedisConnection { get; set; }
+
+        public virtual IConnectionMultiplexer ConnectToRedis()
         {
-            if (string.IsNullOrEmpty(connectionString))
+            if (string.IsNullOrEmpty(RedisConnectionString))
                 throw new InvalidOperationException("Connection string required to connect to Redis");
 
-            return ConnectionMultiplexer.Connect(connectionString);
+             if (RedisConnection == null)
+                RedisConnection = ConnectionMultiplexer.Connect(RedisConnectionString);
+
+            return RedisConnection;
         }
 
         protected async override void Append(LoggingEvent loggingEvent)
@@ -32,7 +38,7 @@ namespace Log4Net.RedisStream
                     throw new InvalidOperationException("RedisConnectionString and RedisStreamName configuration elements are required.");
 
                 //connect to Redis
-                using (var connection = ConnectToRedis(this.RedisConnectionString))
+                using (var connection = ConnectToRedis())
                 {
                     //get Redis database
                     var db = connection.GetDatabase();

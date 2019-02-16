@@ -29,10 +29,10 @@ namespace Log4Net.RedisStream.Test
         public void RedisConnection_ConnectionMissing()
         {
             var appender = new RedisStreamAppender();
-            Assert.Throws<InvalidOperationException>(() => appender.ConnectToRedis(""));
+            Assert.Throws<InvalidOperationException>(() => appender.ConnectToRedis());
 
             appender.RedisConnectionString = "";
-            Assert.Throws<InvalidOperationException>(() => appender.ConnectToRedis(""));
+            Assert.Throws<InvalidOperationException>(() => appender.ConnectToRedis());
         }
         [Fact]
         public void Logging_ConfigurationElementsMissing()
@@ -107,7 +107,7 @@ namespace Log4Net.RedisStream.Test
             //mockAppender.Setup(_ => _.RedisStreamName).Returns("b");
             mockAppender.SetupProperty(_ => _.RedisConnectionString, "a");
             mockAppender.SetupProperty(_ => _.RedisStreamName, "b");
-            mockAppender.Setup(_ => _.ConnectToRedis(It.IsAny<string>()))
+            mockAppender.Setup(_ => _.ConnectToRedis())
                 .Returns(mockMultiplexer.Object);
 
             mockAppender.Object.Threshold = Level.Info;
