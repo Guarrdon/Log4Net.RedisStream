@@ -23,7 +23,7 @@ namespace Log4Net.RedisStream
             if (string.IsNullOrEmpty(RedisConnectionString))
                 throw new InvalidOperationException("Connection string required to connect to Redis");
 
-             if (RedisConnection == null)
+            if (RedisConnection == null)
                 RedisConnection = ConnectionMultiplexer.Connect(RedisConnectionString);
 
             return RedisConnection;
@@ -43,12 +43,12 @@ namespace Log4Net.RedisStream
                     //get Redis database
                     var db = connection.GetDatabase();
 
-                    //convert raw loggingEvent to json
-                    var logEventJson = this.RenderLoggingEvent(loggingEvent);
+                    //format message per formatProvider
+                    var message = this.RenderLoggingEvent(loggingEvent);
 
                     //add log message to stream
-                    var messageId = await db.StreamAddAsync(this.RedisStreamName, this.RedisStreamMessageField, logEventJson, null, null, false, CommandFlags.None);
-                    
+                    var messageId = await db.StreamAddAsync(this.RedisStreamName, this.RedisStreamMessageField, message, null, null, false, CommandFlags.None);
+
                     //check for message failure
                     if (messageId == RedisValue.Null || ((string)messageId).Length == 0)
                         throw new RedisException("The message failed to log to a Redis Stream.  Return message was either null or empty.");
