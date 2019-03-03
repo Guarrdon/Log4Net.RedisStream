@@ -11,7 +11,7 @@ Written for .Net Core applications
 
 ## Getting Started
 
-Redis 5.0 introduced [Redis Streams](https://redis.io/topics/streams-intro), an append only log like data structure.  This paradigm is a natural fit for application logging, so a common logging framework, [Log4Net](https://logging.apache.org/log4net/), was extended to through a custom appender to provide the functionality.
+Redis 5.0 introduced [Redis Streams](https://redis.io/topics/streams-intro), an append only log like data structure.  This paradigm is a natural fit for application logging, so a common logging framework, [Log4Net](https://logging.apache.org/log4net/), was extended through a custom appender to provide the functionality.
 
 This readme will provide detail on the how the appender should be leveraged to communicate with Redis Streams.
 
